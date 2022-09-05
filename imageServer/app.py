@@ -9,14 +9,14 @@ import os
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
-ALLOWED_FILE_TYPES = {'png', 'jpg', 'jpeg', 'gif'}
+FILE_TYPES = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 
 
-def allowed_file(filename):
+def check_file_type(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_FILE_TYPES
+           filename.rsplit('.', 1)[1].lower() in FILE_TYPES
 
 @app.route('/test')
 def test():
@@ -25,13 +25,10 @@ def test():
 @app.route('/uploadImage', methods=['POST'])
 def upload_file():
     category = request.form['category']
-    print(category)
     if 'file' not in request.files:
-        return 'No file part'
+        return 'file part is missing'
     file = request.files['file']
-    if file.filename == '':
-        return 'No selected file'
-    if file and allowed_file(file.filename):
+    if file and check_file_type(file.filename):
         categories = os.listdir(os.path.join(os.getcwd(),'images'))
         if category not in categories:
             os.mkdir(os.path.join(os.getcwd(),'images', category))
