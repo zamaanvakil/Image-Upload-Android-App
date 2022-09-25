@@ -6,7 +6,7 @@ Created on Tue Aug 30 11:34:15 2022
 @author: zamaan
 """
 import os
-from flask import Flask, flash, request, redirect, url_for
+from flask import Flask, request
 from werkzeug.utils import secure_filename
 
 FILE_TYPES = {'png', 'jpg', 'jpeg', 'gif'}
